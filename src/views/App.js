@@ -24,6 +24,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
+import Persons from "./persons/Persons";
 
 const drawerWidth = 240;
 
@@ -176,6 +177,7 @@ class App extends React.Component {
 
                             <Switch>
                                 <Route exact path="/" component={Dashboard} />
+                                <Route exact path="/persons" component={Persons}/>
                             </Switch>
 
                     </main>
