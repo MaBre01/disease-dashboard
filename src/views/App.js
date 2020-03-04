@@ -1,4 +1,5 @@
 import React from 'react';
+import { history } from "../store/configureStore";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -25,6 +26,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
 import Persons from "./persons/Persons";
+import Disease from "./diseases/Disease";
+
+import * as fromDiseaseActions from '../actions/disease';
+import { connect } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -88,6 +93,12 @@ class App extends React.Component {
         });
     };
 
+    handleCloseDiseaseCollapse = () => {
+        this.setState({
+            diseaseCollapseOpen: false
+        });
+    };
+
     getDrawer = (classes) => {
         return (
             <div>
@@ -115,16 +126,29 @@ class App extends React.Component {
                     </ListItem>
                     <Collapse in={this.state.diseaseCollapseOpen}>
                         <List component="nav" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                <ListItemIcon><ArrowRightIcon/></ListItemIcon>
-                                <ListItemText>Maladie 1</ListItemText>
-                            </ListItem>
+                            {this.props.diseases.map((disease, id) => (
+                                <ListItem
+                                    button
+                                    className={classes.nested}
+                                    key={id}
+                                    component={Link}
+                                    to={'/diseases/' + disease.id}
+                                    onClick={this.handleCloseDiseaseCollapse}
+                                >
+                                    <ListItemIcon><ArrowRightIcon/></ListItemIcon>
+                                    <ListItemText>{disease.name}</ListItemText>
+                                </ListItem>
+                            ))}
                         </List>
                     </Collapse>
                 </List>
                 <Divider/>
             </div>
         );
+    };
+
+    componentDidMount = async () => {
+        await this.props.getDiseases();
     };
 
     render() {
@@ -135,7 +159,7 @@ class App extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Router>
+                <Router history={history}>
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
@@ -178,6 +202,7 @@ class App extends React.Component {
                             <Switch>
                                 <Route exact path="/" component={Dashboard} />
                                 <Route exact path="/persons" component={Persons}/>
+                                <Route path="/diseases/:id" component={Disease}/>
                             </Switch>
 
                     </main>
@@ -187,4 +212,12 @@ class App extends React.Component {
     }
 }
 
-export default withStyles(useStyles)(App);
+const mapStateToProps = (state) => ({
+    diseases: state.diseasesReducer.diseases
+});
+
+const mapDispatchToProps = dispatch => ({
+    getDiseases: () => dispatch(fromDiseaseActions.getDiseases())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(App));
