@@ -20,6 +20,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import CloseIcon from '@material-ui/icons/Close';
 
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
@@ -89,7 +90,13 @@ class App extends React.Component {
     getDrawer = (classes) => {
         return (
             <div>
-                <div className={classes.toolbar + ' ' + classes.drawerTop}/>
+                <div className={classes.toolbar + ' ' + classes.drawerTop}>
+                    <Hidden smUp implementation="css">
+                        <IconButton onClick={this.handleDrawerToggle}>
+                            <CloseIcon/>
+                        </IconButton>
+                    </Hidden>
+                </div>
                 <Divider/>
                 <List component="nav">
                     <ListItem button component={Link} to="/">
