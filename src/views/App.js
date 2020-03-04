@@ -8,12 +8,21 @@ import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Divider from "@material-ui/core/Divider";
+import Collapse from "@material-ui/core/Collapse";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import MenuIcon from '@material-ui/icons/Menu';
 import GroupIcon from "@material-ui/icons/Group";
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+
+import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
+import Dashboard from "./dashboard/Dashboard";
 
 const drawerWidth = 240;
 
@@ -50,6 +59,9 @@ const useStyles = theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    }
 });
 
 class App extends React.Component {
@@ -57,7 +69,8 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            mobileOpen: false
+            mobileOpen: false,
+            diseaseCollapseOpen: false
         };
     }
 
@@ -67,28 +80,41 @@ class App extends React.Component {
         });
     };
 
+    handleDiseaseCollapseToggle = () => {
+        this.setState({
+            diseaseCollapseOpen: !this.state.diseaseCollapseOpen
+        });
+    };
+
     getDrawer = (classes) => {
         return (
             <div>
                 <div className={classes.toolbar + ' ' + classes.drawerTop}/>
                 <Divider/>
-                <List>
-                    <ListItem button>
+                <List component="nav">
+                    <ListItem button component={Link} to="/">
+                        <ListItemIcon><DashboardIcon/></ListItemIcon>
+                        <ListItemText>Dashboard</ListItemText>
+                    </ListItem>
+                    <ListItem button component={Link} to="/persons">
                         <ListItemIcon><GroupIcon/></ListItemIcon>
                         <ListItemText>Persons</ListItemText>
                     </ListItem>
+                    <ListItem button onClick={this.handleDiseaseCollapseToggle}>
+                        <ListItemIcon><AssessmentIcon/></ListItemIcon>
+                        <ListItemText>Diseases</ListItemText>
+                        {this.state.diseaseCollapseOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={this.state.diseaseCollapseOpen}>
+                        <List component="nav" disablePadding>
+                            <ListItem button className={classes.nested}>
+                                <ListItemIcon><ArrowRightIcon/></ListItemIcon>
+                                <ListItemText>Maladie 1</ListItemText>
+                            </ListItem>
+                        </List>
+                    </Collapse>
                 </List>
                 <Divider/>
-                <List>
-                    <ListItem button>
-                        <ListItemIcon><AssessmentIcon/></ListItemIcon>
-                        <ListItemText>Maladie 1</ListItemText>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon><AssessmentIcon/></ListItemIcon>
-                        <ListItemText>Maladie 2</ListItemText>
-                    </ListItem>
-                </List>
             </div>
         );
     };
@@ -101,46 +127,52 @@ class App extends React.Component {
 
         return (
             <div className={classes.root}>
-                <CssBaseline/>
-                <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            onClick={this.handleDrawerToggle}
-                            className={classes.menuButton}
-                        >
+                <Router>
+                    <CssBaseline/>
+                    <AppBar position="fixed" className={classes.appBar}>
+                        <Toolbar>
+                            <IconButton
+                                edge="start"
+                                onClick={this.handleDrawerToggle}
+                                className={classes.menuButton}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+                            <Typography variant="h6" noWrap>Responsive bar</Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <nav className={classes.drawer}>
+                        <Hidden smUp implementation="css">
+                            <Drawer
+                                container={container}
+                                variant="temporary"
+                                anchor="left"
+                                open={this.state.mobileOpen}
+                                classes={{paper: classes.drawerPaper}}
+                                ModalProps={{keepMounted: true}}
+                            >
+                                {drawer}
+                            </Drawer>
+                        </Hidden>
+                        <Hidden xsDown implementation="css">
+                            <Drawer
+                                variant="permanent"
+                                open={true}
+                                classes={{paper: classes.drawerPaper}}
+                            >
+                                {drawer}
+                            </Drawer>
+                        </Hidden>
+                    </nav>
+                    <main className={classes.content}>
+                        <div className={classes.toolbar}/>
 
-                        </IconButton>
-                        <Typography variant="h6" noWrap>Responsive bar</Typography>
-                    </Toolbar>
-                </AppBar>
-                <nav className={classes.drawer}>
-                    <Hidden smUp implementation="css">
-                        <Drawer
-                            container={container}
-                            variant="temporary"
-                            anchor="left"
-                            open={this.state.mobileOpen}
-                            classes={{paper: classes.drawerPaper}}
-                            ModalProps={{keepMounted: true}}
-                        >
-                            {drawer}
-                        </Drawer>
-                    </Hidden>
-                    <Hidden xsDown implementation="css">
-                        <Drawer
-                            variant="permanent"
-                            open={true}
-                            classes={{paper: classes.drawerPaper}}
-                        >
-                            {drawer}
-                        </Drawer>
-                    </Hidden>
-                </nav>
-                <main className={classes.content}>
-                    <div className={classes.toolbar}/>
-                    <h1>Hello world !</h1>
-                </main>
+                            <Switch>
+                                <Route exact path="/" component={Dashboard} />
+                            </Switch>
+
+                    </main>
+                </Router>
             </div>
         );
     }
