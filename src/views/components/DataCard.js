@@ -14,7 +14,7 @@ class DataCard extends React.Component {
                         <Box component="div" display="flex" alignItems="center">
                             <Box component="div" mr={1}>{this.props.icon}</Box>
                             <Box>
-                                <Typography variant="h6" color="action">{this.props.text}</Typography>
+                                <Typography variant="h6">{this.props.text}</Typography>
                             </Box>
                         </Box>
                         <Typography variant="h4" align="right">{this.props.data}</Typography>
