@@ -1,5 +1,4 @@
-// const url = 'http://api-disease.mickael-danjoux.com/api/people';
-const url = 'http://127.0.0.1:8000/api/people';
+const url = 'https://api-disease.mickael-danjoux.com/api/people';
 
 export const getPeople = async () => {
     try {

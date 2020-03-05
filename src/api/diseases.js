@@ -1,5 +1,5 @@
 export const getDiseases = async () => {
-    const url = 'http://api-disease.mickael-danjoux.com/api/diseases';
+    const url = 'https://api-disease.mickael-danjoux.com/api/diseases';
 
     try {
         const response = await fetch(url, {
@@ -21,7 +21,7 @@ export const getDiseases = async () => {
 };
 
 export const getDisease = async (diseaseId) => {
-    const url = 'http://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId;
+    const url = 'https://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId;
 
     try {
         const response = await fetch(url, {
@@ -43,7 +43,7 @@ export const getDisease = async (diseaseId) => {
 };
 
 export const getInfectedCountByYear = async (diseaseId, year) => {
-    const url = 'http://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/' + year;
+    const url = 'https://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/' + year;
 
     try {
         const response = await fetch(url, {
@@ -65,7 +65,7 @@ export const getInfectedCountByYear = async (diseaseId, year) => {
 };
 
 export const getInfectedCountByGender = async (diseaseId) => {
-    const url = 'http://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/gender';
+    const url = 'https://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/gender';
 
     try {
         const response = await fetch(url, {
@@ -87,7 +87,7 @@ export const getInfectedCountByGender = async (diseaseId) => {
 };
 
 export const getInfectedCountByDiseaseByYear = async (diseaseId) => {
-    const url = 'http://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/contracted_by_year';
+    const url = 'https://api-disease.mickael-danjoux.com/api/diseases/' + diseaseId + '/information/contracted_by_year';
 
     try {
         const response = await fetch(url, {
