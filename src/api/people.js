@@ -1,6 +1,8 @@
-const url = 'https://api-disease.mickael-danjoux.com/api/people';
+import { API_ROUTE } from "../config/api";
 
 export const getPeople = async () => {
+    const url = API_ROUTE + '/people';
+
     try {
         const response = await fetch(url, {
             method: 'GET',
