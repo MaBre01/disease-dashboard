@@ -22,6 +22,9 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import CloseIcon from '@material-ui/icons/Close';
+import Tooltip from '@material-ui/core/Tooltip';
+import Button from "@material-ui/core/Button";
+import RssFeedIcon from '@material-ui/icons/RssFeed';
 
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
@@ -35,7 +38,7 @@ const drawerWidth = 240;
 
 const useStyles = theme => ({
     root: {
-        display: 'flex',
+        display: 'flex'
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {
@@ -55,7 +58,14 @@ const useStyles = theme => ({
             display: 'none',
         },
     },
+    title: {
+        flewGrow: 1
+    },
     toolbar: theme.mixins.toolbar,
+    menuBar: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
     drawerTop: {
         backgroundColor: '#a6a6a6'
     },
@@ -162,7 +172,7 @@ class App extends React.Component {
                 <Router history={history}>
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>
-                        <Toolbar>
+                        <Toolbar className={classes.menuBar}>
                             <IconButton
                                 edge="start"
                                 onClick={this.handleDrawerToggle}
@@ -170,7 +180,12 @@ class App extends React.Component {
                             >
                                 <MenuIcon/>
                             </IconButton>
-                            <Typography variant="h6" noWrap>Responsive bar</Typography>
+                            <Typography variant="h6" noWrap className={classes.title}>Responsive bar</Typography>
+                            <Tooltip title="Go to API documentation">
+                                <Button href="https://api-disease.mickael-danjoux.com/">
+                                    <RssFeedIcon/>
+                                </Button>
+                            </Tooltip>
                         </Toolbar>
                     </AppBar>
                     <nav className={classes.drawer}>
