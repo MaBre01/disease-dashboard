@@ -17,16 +17,29 @@ class Disease extends React.Component {
         this.state = {
             isLoaded: false,
             diseaseId: this.props.match.params.id,
-            disease: {}
+            disease: {},
+            infectedThisYear: 0,
+            infectedByGender: {
+                F: 0,
+                M: 0
+            }
         };
     }
 
-    componentDidMount = async () => {
+    loadData = async () => {
+        const now = new Date();
+
         this.setState({
             isLoaded: true,
             diseaseId: this.props.match.params.id,
-            disease: await fromDiseaseApi.getDisease(this.props.match.params.id)
+            disease: await fromDiseaseApi.getDisease(this.props.match.params.id),
+            infectedThisYear: await fromDiseaseApi.getInfectedCountByYear(this.props.match.params.id, now.getFullYear()),
+            infectedByGender: await fromDiseaseApi.getInfectedCountByGender(this.props.match.params.id)
         });
+    };
+
+    componentDidMount = async () => {
+        await this.loadData();
     };
 
     componentDidUpdate = async (prevProps, prevState, snapshot) => {
@@ -34,11 +47,7 @@ class Disease extends React.Component {
             this.setState({
                 isLoaded: false
             });
-            this.setState({
-                isLoaded: true,
-                diseaseId: this.props.match.params.id,
-                disease: await fromDiseaseApi.getDisease(this.props.match.params.id)
-            });
+            await this.loadData();
         }
     };
 
@@ -70,17 +79,17 @@ class Disease extends React.Component {
                     <DataCard
                         icon={<IoMdFemale size={40} color="#3f51b5"/>}
                         text="Women"
-                        data={15}
+                        data={this.state.infectedByGender.F}
                     />
                     <DataCard
                         icon={<IoMdMale size={40} color="#3f51b5"/>}
                         text="Men"
-                        data={1}
+                        data={this.state.infectedByGender.M}
                     />
                     <DataCard
                         icon={<MdDateRange size={40} color="#3f51b5"/>}
                         text="This year"
-                        data={16}
+                        data={this.state.infectedThisYear.count}
                     />
                 </Grid>
                 <DiseaseProgressionTimeLine diseaseId={this.state.diseaseId}/>
