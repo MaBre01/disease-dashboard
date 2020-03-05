@@ -28,7 +28,10 @@ class Persons extends React.Component {
         }
 
         return (
-            <PeopleTable people={this.state.people}/>
+            <div>
+                <h1>People list</h1>
+                <PeopleTable people={this.state.people}/>
+            </div>
         );
     }
 }
