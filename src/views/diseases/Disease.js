@@ -2,6 +2,7 @@ import React from "react";
 import * as fromDiseaseApi from "../../api/diseases";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
+import { Alert, AlertTitle } from '@material-ui/lab';
 import DataCard from "../components/DataCard";
 import { IoMdFemale, IoMdPeople, IoMdMale } from 'react-icons/io';
 import { MdDateRange } from 'react-icons/md';
@@ -42,11 +43,21 @@ class Disease extends React.Component {
     };
 
     render() {
-        if (! this.state.isLoaded) {
+        if (!this.state.isLoaded) {
             return (
                 <LinearProgress/>
             );
         }
+
+        if (!this.state.disease) {
+            return (
+                <Alert severity="error">
+                    <AlertTitle>Disease not loaded</AlertTitle>
+                    Try again
+                </Alert>
+            );
+        }
+
         return (
             <div>
                 <h1><FaDna/> {this.state.disease.name}</h1>
