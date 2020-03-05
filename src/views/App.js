@@ -25,6 +25,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import RssFeedIcon from '@material-ui/icons/RssFeed';
+import { API_ROUTE } from "../config/api";
 
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
@@ -182,7 +183,7 @@ class App extends React.Component {
                             </IconButton>
                             <Typography variant="h6" noWrap className={classes.title}>Responsive bar</Typography>
                             <Tooltip title="Go to API documentation">
-                                <Button href="https://api-disease.mickael-danjoux.com/">
+                                <Button href={API_ROUTE}>
                                     <RssFeedIcon/>
                                 </Button>
                             </Tooltip>
