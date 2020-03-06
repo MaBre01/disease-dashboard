@@ -6,5 +6,5 @@ We've created a Dashboard that do some statistics on an API.
 
 This app is connected to this api : https://api-disease.mickael-danjoux.com/api/ .
 
-We can ask it to get people, cities, diseases and the contracted diseases.
+We can ask it to get people, cities, diseases the contracted diseases.
 
