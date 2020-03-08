@@ -7,15 +7,27 @@ class Persons extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            people: [],
-            isLoaded: false
+            peopleData: {},
+            isLoaded: false,
+            page: 0
         }
 
     };
 
     componentDidMount = async () => {
         this.setState({
-            people: await fromPeopleApi.getPeople(),
+            peopleData: await fromPeopleApi.getPeople(),
+            isLoaded: true
+        });
+    };
+
+    loadPeoplePage = async (page) => {
+        this.setState({
+            isLoaded: false
+        });
+        await this.setState({
+            peopleData: await fromPeopleApi.getPeoplePage(page + 1),
+            page: page,
             isLoaded: true
         });
     };
@@ -23,14 +35,22 @@ class Persons extends React.Component {
     render() {
         if (!this.state.isLoaded) {
             return (
-                <LinearProgress/>
+                <div>
+                    <h1>People list</h1>
+                    <LinearProgress/>
+                </div>
             );
         }
 
         return (
             <div>
                 <h1>People list</h1>
-                <PeopleTable people={this.state.people}/>
+                <PeopleTable
+                    people={this.state.peopleData['hydra:member']}
+                    peopleLength={this.state.peopleData['hydra:totalItems']}
+                    pageLoader={this.loadPeoplePage}
+                    page={this.state.page}
+                />
             </div>
         );
     }

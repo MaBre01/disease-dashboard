@@ -44,10 +44,8 @@ class PeopleTable extends React.Component {
         this.state = {
             order: 'asc',
             orderBy: 'lastName',
-            selected: [],
-            page: 0,
             dense: false,
-            rowsPerPage: 10
+            rowsPerPage: 30
         };
     }
 
@@ -62,8 +60,6 @@ class PeopleTable extends React.Component {
         const { classes } = this.props;
         const people = this.props.people;
 
-        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, people.length - this.state.page * this.state.rowsPerPage);
-
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -77,10 +73,8 @@ class PeopleTable extends React.Component {
                             {this.enhancedTableHead()}
                             <TableBody>
                                 {this.stableSort(people, this.getComparator())
-                                    .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((person) => {
                                         const labelId = `enhanced-table-checkbox-${person.id}`;
-
                                         return (
                                             <TableRow
                                                 hover
@@ -101,20 +95,15 @@ class PeopleTable extends React.Component {
                                             </TableRow>
                                         );
                                     })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: (this.state.dense ? 33 : 53) * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+                        rowsPerPageOptions={[30]}
                         component="div"
-                        count={this.props.people.length}
+                        count={this.props.peopleLength}
                         rowsPerPage={this.state.rowsPerPage}
-                        page={this.state.page}
+                        page={this.props.page}
                         onChangePage={this.handleChangePage}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
@@ -194,8 +183,10 @@ class PeopleTable extends React.Component {
     };
 
     handleChangePage = (event, newPage) => {
+        this.props.pageLoader(newPage);
         this.setState({
-            page: newPage
+            order: 'asc',
+            orderBy: 'lastName'
         });
     };
 
