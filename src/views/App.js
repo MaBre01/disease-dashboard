@@ -137,7 +137,7 @@ class App extends React.Component {
                     </ListItem>
                     <Collapse in={this.state.diseaseCollapseOpen}>
                         <List component="nav" disablePadding>
-                            {this.props.diseases.map((disease, id) => (
+                            {this.props.diseasesData['hydra:member'].map((disease, id) => (
                                 <ListItem
                                     button
                                     className={classes.nested}
@@ -229,7 +229,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    diseases: state.diseasesReducer.diseases
+    diseasesData: state.diseasesReducer.diseasesData
 });
 
 const mapDispatchToProps = dispatch => ({

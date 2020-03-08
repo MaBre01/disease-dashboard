@@ -7,8 +7,7 @@ let initialState = {
 const DiseasesReducer = (state = initialState, action) => {
     switch (action.type) {
         case fromDiseaseActions.GET_DISEASES:
-            let tmp = (action.payload) ? action.payload : [];
-            return {...state, diseases: [...tmp]};
+            return {...state, diseasesData: action.payload};
         default:
             return state;
     }
