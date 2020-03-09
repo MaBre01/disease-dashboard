@@ -111,6 +111,12 @@ class App extends React.Component {
     };
 
     getDrawer = (classes) => {
+        let diseases = [];
+
+        if (this.props.diseasesData !== undefined) {
+            diseases = this.props.diseasesData['hydra:member'];
+        }         
+
         return (
             <div>
                 <div className={classes.toolbar + ' ' + classes.drawerTop}>
@@ -137,7 +143,7 @@ class App extends React.Component {
                     </ListItem>
                     <Collapse in={this.state.diseaseCollapseOpen}>
                         <List component="nav" disablePadding>
-                            {this.props.diseasesData['hydra:member'].map((disease, id) => (
+                            {diseases.map((disease, id) => (
                                 <ListItem
                                     button
                                     className={classes.nested}
